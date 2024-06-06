@@ -2,21 +2,17 @@
 [build-system]
 requires = [
   "cffi; implementation_name == 'pypy'",
-  "cython>=3.0.0; implementation_name == 'cpython'",
+  "cython>=3.0.0; implementation_name != 'pypy'",
   "packaging",
-  # "setuptools>=61",
-  # "setuptools_scm[toml]",
   "scikit-build-core",
 ]
 build-backend = "scikit_build_core.build"
-
-# build-backend = "setuptools.build_meta"
 
 # Project metadata
 # ref: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [project]
 name = "pyzmq"
-version = "26.0.0b2"
+version = "26.0.3"
 authors = [
   { name = "PyZMQ Contributors", email = "zeromq-dev@lists.zeromq.org" },
   { name = "Brian E. Granger" },
@@ -56,8 +52,8 @@ Tracker = "https://github.com/zeromq/pyzmq/issues"
 [tool.scikit-build]
 wheel.packages = ["zmq"]
 wheel.license-files = ["licenses/LICENSE*"]
-# 3.14 for FetchContent_MakeAvailable
-cmake.version = ">=3.14"
+# 3.15 is required by scikit-build-core
+cmake.version = ">=3.15"
 # only build/install the pyzmq component
 cmake.targets = ["pyzmq"]
 install.components = ["pyzmq"]
@@ -70,6 +66,9 @@ exclude = [
     "zmq/eventloop/minitornado/*",
 ]
 quote-style = "preserve"
+
+[tool.ruff.isort]
+known-first-party = ["zmq", "zmq_test_utils"]
 
 [tool.ruff.lint]
 select = [
@@ -89,7 +88,7 @@ exclude = ["buildutils/templates/*"]
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F4", "E4"]
 "__init__.pyi" = ["F4", "E4"]
-"zmq/tests/*" = ["E4", "F4"]
+"tests/*" = ["E4", "F4"]
 "docs/source/conf.py" = ["E4"]
 "zmq/eventloop/*" = ["E402"]
 "zmq/ssh/forward.py" = ["E"]
@@ -117,7 +116,7 @@ skip = ["zmq/__init__.py"]
 github_url = "https://github.com/zeromq/pyzmq"
 
 [tool.tbump.version]
-current = "26.0.0b2"
+current = "26.0.3"
 regex = '''
   (?P<major>\d+)
   \.

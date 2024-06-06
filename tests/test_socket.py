@@ -16,7 +16,7 @@ import pytest
 from pytest import mark
 
 import zmq
-from zmq.tests import BaseZMQTestCase, GreenTest, SkipTest, have_gevent, skip_pypy
+from zmq_test_utils import BaseZMQTestCase, GreenTest, SkipTest, have_gevent, skip_pypy
 
 pypy = platform.python_implementation().lower() == 'pypy'
 windows = platform.platform().lower().startswith('windows')
@@ -486,7 +486,7 @@ class TestSocket(BaseZMQTestCase):
         if zmq.IPC_PATH_MAX_LEN == 0:
             raise SkipTest("IPC_PATH_MAX_LEN undefined")
 
-        msg = "Surprising value for IPC_PATH_MAX_LEN: %s" % zmq.IPC_PATH_MAX_LEN
+        msg = f"Surprising value for IPC_PATH_MAX_LEN: {zmq.IPC_PATH_MAX_LEN}"
         assert zmq.IPC_PATH_MAX_LEN > 30, msg
         assert zmq.IPC_PATH_MAX_LEN < 1025, msg
 
@@ -619,13 +619,13 @@ class TestSocket(BaseZMQTestCase):
         try:
             buf = c * N
         except MemoryError as e:
-            raise SkipTest("Not enough memory: %s" % e)
+            raise SkipTest(f"Not enough memory: {e}")
         a, b = self.create_bound_pair()
         try:
             a.send(buf, copy=False)
             rcvd = b.recv(copy=False)
         except MemoryError as e:
-            raise SkipTest("Not enough memory: %s" % e)
+            raise SkipTest(f"Not enough memory: {e}")
         # sample the front and back of the received message
         # without checking the whole content
         byte = ord(c)

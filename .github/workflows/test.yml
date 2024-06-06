@@ -8,12 +8,14 @@ on:
     paths-ignore:
       - "docs/**"
       - "tools/**"
+      - ".circleci/**"
       - ".github/workflows/*"
       - "!.github/workflows/test.yml"
   pull_request:
     paths-ignore:
       - "docs/**"
       - "tools/**"
+      - ".circleci/**"
       - ".github/workflows/*"
       - "!.github/workflows/test.yml"
 
@@ -180,7 +182,7 @@ jobs:
 
       - name: run tests
         run: |
-          python -m pytest --maxfail 2 --cov zmq -m "not wheel and not new_console" -v zmq/tests
+          pytest --maxfail 2 --cov zmq -m "not wheel and not new_console" -v
 
       - name: upload coverage
         run: codecov
