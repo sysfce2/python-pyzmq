@@ -23,8 +23,7 @@ concurrency:
 
 env:
   PYTHONUNBUFFERED: "1"
-  TWINE_NONINTERACTIVE: "1"
-#  CIBW_PRERELEASE_PYTHONS: "1"
+  # CIBW_PRERELEASE_PYTHONS: "1"
 
 jobs:
   sdist:
@@ -116,6 +115,8 @@ jobs:
             architecture: x86
             cibw:
               build: "cp*win32"
+              # free-threaded doesn't seem to work on Windows
+              skip: "*t-win*"
 
           - os: windows-2019
             name: win-pypy
@@ -128,13 +129,16 @@ jobs:
             architecture: x64
             cibw:
               build: "cp*win_amd64"
+              # free-threaded doesn't seem to work on Windows
+              skip: "*t-win*"
 
           - os: windows-2022
             name: win_arm64
             architecture: x64
             cibw:
               arch: ARM64
-              skip: "cp37*"
+              # free-threaded doesn't seem to work on Windows
+              skip: "cp37* *t-win*"
 
     steps:
       - uses: actions/checkout@v4

@@ -12,7 +12,7 @@ build-backend = "scikit_build_core.build"
 # ref: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [project]
 name = "pyzmq"
-version = "26.0.3"
+version = "26.1.0"
 authors = [
   { name = "PyZMQ Contributors", email = "zeromq-dev@lists.zeromq.org" },
   { name = "Brian E. Granger" },
@@ -38,6 +38,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
 dependencies = ["cffi; implementation_name == 'pypy'"]
 description = "Python bindings for 0MQ"
@@ -116,7 +117,7 @@ skip = ["zmq/__init__.py"]
 github_url = "https://github.com/zeromq/pyzmq"
 
 [tool.tbump.version]
-current = "26.0.3"
+current = "26.1.0"
 regex = '''
   (?P<major>\d+)
   \.
@@ -143,6 +144,7 @@ search = '__version__: str = "{current_version}"'
 
 [tool.cibuildwheel]
 build-verbosity = "1"
+free-threaded-support = true
 test-requires = ["pytest", "importlib_metadata"]
 test-command = "pytest -vsx {package}/tools/test_wheel.py"
 
@@ -192,3 +194,7 @@ manylinux-i686-image = "manylinux2010"
 
 # note: manylinux_2_28 builds are added
 # in .github/workflows/wheels.yml
+
+[[tool.cibuildwheel.overrides]]
+select = "cp313t-*"
+build-frontend = "pip; args: -v --pre --extra-index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple"

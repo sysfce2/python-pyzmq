@@ -42,10 +42,14 @@ jobs:
       matrix:
         include:
           - os: macos-13
-            python: 3.7
+            python: "3.7"
 
           - os: macos-14
-            python: 3.12
+            python: "3.12"
+            zmq: bundled
+
+          - os: macos-14
+            python: "3.13"
             zmq: bundled
 
           - os: macos-13
@@ -53,7 +57,7 @@ jobs:
             zmq: bundled
 
           - os: ubuntu-20.04
-            python: 3.7
+            python: "3.7"
             zmq: bundled
             tornado: none
 
@@ -65,7 +69,7 @@ jobs:
             python: pypy-3.7
 
           - os: ubuntu-22.04
-            python: 3.9
+            python: "3.9"
             tornado: head
 
           - os: ubuntu-22.04
@@ -81,6 +85,13 @@ jobs:
           - os: ubuntu-22.04
             python: "3.12"
 
+          - os: ubuntu-22.04
+            python: "3.13"
+
+          - os: ubuntu-22.04
+            python: "3.13"
+            free_threading: free_threading
+
           - os: windows-2022
             python: "3.7"
             arch: x86
@@ -90,7 +101,7 @@ jobs:
             arch: x64
 
           - os: windows-2022
-            python: "3.11"
+            python: "3.13"
             arch: x64
 
     steps:
@@ -98,12 +109,40 @@ jobs:
 
       - name: setup python
         uses: actions/setup-python@v5
+        if: ${{ !matrix.free_threading }}
         with:
           python-version: ${{ matrix.python }}
           architecture: ${{ matrix.arch || 'x64' }}
           # allows us to use '3.12' and get '-dev' while we wait
           allow-prereleases: true
           cache: pip
+
+      - name: setup python (free threading)
+        if: ${{ matrix.free_threading }}
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: nogil
+          condarc: |
+            channels:
+              - ad-testing/label/py313_nogil
+              - defaults
+          create-args: >-
+            python=${{ matrix.python-version }}
+            pip
+
+      - name: activate python (free threading)
+        if: ${{ matrix.free_threading }}
+        # light activate, just add env to path
+        # run this in micromamba-shell
+        # so we don't have to for the rest
+        run: |
+          echo $PATH
+          echo "PATH=$PATH" >> "$GITHUB_ENV"
+          echo "PYTHON_GIL=0" >> "$GITHUB_ENV"
+          # need prerelease Cython until 3.1 is out
+          echo "PIP_PRE=1" >> "$GITHUB_ENV"
+          echo "PIP_EXTRA_INDEX_URL=https://pypi.anaconda.org/scientific-python-nightly-wheels/simple" >> "$GITHUB_ENV"
+        shell: micromamba-shell {0}
 
       - name: setup coverage
         if: startsWith(matrix.python, 'pypy') || startsWith(matrix.python, '3.12')
@@ -178,7 +217,7 @@ jobs:
 
       - name: import zmq
         run: |
-          python -c "import zmq"
+          python -I -c "import zmq"
 
       - name: run tests
         run: |
