@@ -8,7 +8,8 @@ updates:
       interval: monthly
     groups:
       actions:
-        patterns: "*"
+        patterns:
+          - "actions/*"
   - package-ecosystem: pip
     directory: "/tools"
     schedule:
