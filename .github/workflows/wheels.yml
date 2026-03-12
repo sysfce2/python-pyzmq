@@ -180,6 +180,12 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Set up QEMU
+        if: matrix.name == 'manylinux-riscv64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: riscv64
+
       - name: install dependencies
         run: |
           pip install --upgrade setuptools pip wheel
