@@ -49,7 +49,7 @@ jobs:
       matrix:
         include:
           - os: macos-13
-            python: "3.8"
+            python: "3.9"
 
           - os: macos-14
             python: "3.13"
@@ -60,16 +60,13 @@ jobs:
             zmq: bundled
 
           - os: ubuntu-22.04
-            python: "3.8"
+            python: "3.9"
             zmq: bundled
             tornado: none
 
           - os: ubuntu-22.04
             python: pypy-3.9
             zmq: bundled
-
-          - os: ubuntu-22.04
-            python: pypy-3.8
 
           - os: ubuntu-22.04
             python: "3.9"
@@ -107,7 +104,7 @@ jobs:
             free_threading: free_threading
 
           - os: windows-2022
-            python: "3.8"
+            python: "3.9"
             arch: x86
 
           - os: windows-2022
