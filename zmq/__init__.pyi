@@ -1,5 +1,3 @@
-from typing import List
-
 from . import backend, sugar
 
 COPY_THRESHOLD: int

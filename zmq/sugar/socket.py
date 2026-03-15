@@ -9,13 +9,12 @@ import errno
 import pickle
 import random
 import sys
+from collections.abc import Sequence
 from typing import (
     Any,
     Callable,
     Generic,
-    List,
     Literal,
-    Sequence,
     TypeVar,
     Union,
     cast,
@@ -803,7 +802,7 @@ class Socket(SocketBase, AttributeSetter, Generic[SocketReturnType]):
             parts.append(part)
         # cast List[Union] to Union[List]
         # how do we get mypy to recognize that return type is invariant on `copy`?
-        return cast(Union[List[zmq.Frame], List[bytes]], parts)
+        return cast(Union[list[zmq.Frame], list[bytes]], parts)
 
     def _deserialize(
         self,

@@ -17,7 +17,6 @@ import asyncio
 import logging
 import os
 import sys
-from typing import List
 
 from tornado import ioloop
 
@@ -27,7 +26,7 @@ from zmq.auth.asyncio import AsyncioAuthenticator
 from zmq.eventloop import zmqstream
 
 
-def echo(server: zmqstream.ZMQStream, msg: List[bytes]) -> None:
+def echo(server: zmqstream.ZMQStream, msg: list[bytes]) -> None:
     logging.debug("server recvd %s", msg)
     reply = msg + [b'World']
     logging.debug("server sending %s", reply)
@@ -50,7 +49,7 @@ def setup_server(server_secret_file: str, endpoint: str = 'tcp://127.0.0.1:9000'
     return server_stream
 
 
-def client_msg_recvd(msg: List[bytes]):
+def client_msg_recvd(msg: list[bytes]):
     logging.debug("client recvd %s", msg)
     logging.info("Ironhouse test OK")
     # stop the loop when we get the reply
