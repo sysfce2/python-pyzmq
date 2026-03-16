@@ -114,6 +114,11 @@ jobs:
           #     build: "cp31*-manylinux* pp39-manylinux*"
           #     manylinux_x86_64_image: manylinux_2_28
 
+          - name: manylinux-riscv64
+            cibw:
+              arch: riscv64
+              build: "*manylinux*"
+
           - name: musllinux
             cibw:
               arch: auto,auto32
