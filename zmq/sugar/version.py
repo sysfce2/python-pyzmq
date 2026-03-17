@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 import re
-from typing import Match, cast
+from re import Match
+from typing import cast
 
 from zmq.backend import zmq_version_info
 

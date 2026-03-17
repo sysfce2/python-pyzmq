@@ -30,8 +30,6 @@ to trigger needed events.
 
 from __future__ import annotations
 
-from typing import List
-
 import zmq as _zmq
 from zmq import *
 from zmq.green.core import _Context, _Socket

@@ -48,28 +48,28 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          - os: macos-13
-            python: "3.8"
+          - os: macos-15-intel
+            python: "3.9"
+            arch: x64
 
           - os: macos-14
-            python: "3.13"
+            python: "3.14"
             zmq: bundled
+            arch: arm64
 
-          - os: macos-13
+          - os:  macos-15-intel
             python: pypy-3.9
             zmq: bundled
+            arch: x64
 
           - os: ubuntu-22.04
-            python: "3.8"
+            python: "3.9"
             zmq: bundled
             tornado: none
 
           - os: ubuntu-22.04
             python: pypy-3.9
             zmq: bundled
-
-          - os: ubuntu-22.04
-            python: pypy-3.8
 
           - os: ubuntu-22.04
             python: "3.9"
@@ -107,7 +107,7 @@ jobs:
             free_threading: free_threading
 
           - os: windows-2022
-            python: "3.8"
+            python: "3.9"
             arch: x86
 
           - os: windows-2022
@@ -129,7 +129,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
-          architecture: ${{ matrix.arch || 'x64' }}
+          architecture: ${{ matrix.arch }}
           # allows us to use '3.12' and get '-dev' while we wait
           allow-prereleases: true
           freethreaded: ${{ matrix.free_threading == 'free_threading' }}

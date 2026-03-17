@@ -6,7 +6,8 @@
 from __future__ import annotations
 
 import struct
-from typing import Awaitable, TypedDict, overload
+from collections.abc import Awaitable
+from typing import TypedDict, overload
 
 import zmq
 import zmq.asyncio

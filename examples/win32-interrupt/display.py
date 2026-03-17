@@ -1,13 +1,12 @@
 """The display part of a simply two process chat app."""
 
 # This file has been placed in the public domain.
-from typing import List
 
 import zmq
 from zmq.utils.win32 import allow_interrupt
 
 
-def main(addrs: List[str]):
+def main(addrs: list[str]):
     context = zmq.Context()
     control = context.socket(zmq.PUB)
     control.bind('inproc://control')

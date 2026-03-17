@@ -3,7 +3,7 @@
 This package contains Python bindings for [ZeroMQ](https://zeromq.org).
 ØMQ is a lightweight and fast messaging implementation.
 
-PyZMQ should work with any reasonable version of Python (≥ 3.8), as well as PyPy.
+PyZMQ should work with any reasonable version of Python (≥ 3.9), as well as PyPy.
 PyZMQ supports libzmq ≥ 3.2.2 (including 4.x).
 
 For a summary of changes to pyzmq, see our

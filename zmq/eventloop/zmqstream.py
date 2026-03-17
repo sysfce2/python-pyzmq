@@ -16,8 +16,9 @@ from __future__ import annotations
 import asyncio
 import pickle
 import warnings
+from collections.abc import Awaitable, Sequence
 from queue import Queue
-from typing import Any, Awaitable, Callable, Literal, Sequence, cast, overload
+from typing import Any, Callable, Literal, cast, overload
 
 from tornado.ioloop import IOLoop
 from tornado.log import gen_log
