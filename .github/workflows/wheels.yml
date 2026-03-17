@@ -117,7 +117,9 @@ jobs:
           - name: manylinux-riscv64
             cibw:
               arch: riscv64
-              build: "*manylinux*"
+              # this build is emulated, limit to the stable-abi build on 3.12 (works on 3.13+)
+              # because it costs way more per wheel
+              build: "cp312*manylinux*"
 
           - name: musllinux
             cibw:
