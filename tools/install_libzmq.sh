@@ -82,6 +82,6 @@ export CXXFLAGS="-Wno-error ${CXXFLAGS:-}"
 ./configure --prefix="$PREFIX" --disable-perf --without-docs --enable-curve --with-libsodium --disable-drafts --disable-libsodium_randombytes_close
 # only build libzmq, not unused tests
 make -j${CPU_COUNT} src/libzmq.la
-make install-libLTLIBRARIES
+make install-libLTLIBRARIES install-includeHEADERS
 
 which ldconfig && ldconfig || true
