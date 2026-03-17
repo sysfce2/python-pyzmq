@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # script to install libzmq/libsodium for use in wheels
 set -ex
+CPU_COUNT=${CPU_COUNT:-4}
 LIBSODIUM_VERSION=$(python buildutils/bundle.py libsodium)
 LIBZMQ_VERSION=$(python buildutils/bundle.py)
 PYZMQ_DIR="$PWD"
@@ -63,7 +64,7 @@ curl -L -O "https://github.com/zeromq/libzmq/releases/download/v${LIBZMQ_VERSION
 tar -xzf libsodium-${LIBSODIUM_VERSION}*.tar.gz
 cd libsodium-*/
 ./configure --prefix="$PREFIX"
-make -j4
+make -j${CPU_COUNT}
 make install
 
 cd ..
@@ -79,7 +80,8 @@ cd zeromq-${LIBZMQ_VERSION}
 export CXXFLAGS="-Wno-error ${CXXFLAGS:-}"
 
 ./configure --prefix="$PREFIX" --disable-perf --without-docs --enable-curve --with-libsodium --disable-drafts --disable-libsodium_randombytes_close
-make -j4
-make install
+# only build libzmq, not unused tests
+make -j${CPU_COUNT} src/libzmq.la
+make install-libLTLIBRARIES
 
 which ldconfig && ldconfig || true

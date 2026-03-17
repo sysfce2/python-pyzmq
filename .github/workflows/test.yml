@@ -218,8 +218,8 @@ jobs:
           pushd libzmq-*
           ./autogen.sh
           ./configure --enable-drafts
-          make -j4
-          sudo make install
+          make -j4 src/libzmq.la
+          sudo make install-libLTLIBRARIES
           sudo ldconfig
           popd
           echo "ZMQ_PREFIX=/usr/local" >> "$GITHUB_ENV"
