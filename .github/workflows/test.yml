@@ -48,20 +48,19 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          - os: macos-14
+          - os: macos-15-intel
             python: "3.9"
-
-          - os: macos-14
-            python: "3.11"
             arch: x64
 
           - os: macos-14
-            python: "3.13"
+            python: "3.14"
             zmq: bundled
+            arch: arm64
 
-          - os: macos-14
+          - os:  macos-15-intel
             python: pypy-3.9
             zmq: bundled
+            arch: x64
 
           - os: ubuntu-22.04
             python: "3.9"
