@@ -1,8 +1,15 @@
-# Testing
+# Contributing to pyzmq
+
+## LLMs and generative AI tools
+
+Since generative AI tools like LLMs are destroying open source and the environment alike, all contributions from LLM tools such as ChatGPT, Claude, Copilot, Gemini, etc. are not accepted.
+That goes for both code and (more importantly) human communication channels such as Issues, Comments, Pull Requests, and Discussions.
+
+## Testing
 
 pyzmq is tested on GitHub Actions.
 
-![Build Status](https://github.com/zeromq/pyzmq/actions/workflows/test.yml/badge.svg)\](https://github.com/zeromq/pyzmq/actions/workflows/test.yml)
+[![Build Status](https://github.com/zeromq/pyzmq/actions/workflows/test.yml/badge.svg)](https://github.com/zeromq/pyzmq/actions/workflows/test.yml)
 
 ## Opening an Issue
 
@@ -55,6 +62,12 @@ To install pre-commit:
 ```
 pip install pre-commit
 pre-commit install
+```
+
+To run it manually:
+
+```
+pre-commit run --all-files
 ```
 
 Examples are copyright their respective authors, and BSD unless otherwise
