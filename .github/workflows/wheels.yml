@@ -21,6 +21,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 env:
   PYTHONUNBUFFERED: "1"
   # CIBW_PRERELEASE_PYTHONS: "1"
@@ -30,13 +33,14 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: setup python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: "3.11"
-          cache: pip
 
       - name: install dependencies
         run: |
@@ -47,7 +51,7 @@ jobs:
         run: |
           python -m build --sdist .
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: sdist
           path: "dist/*.tar.gz"
@@ -161,10 +165,12 @@ jobs:
               arch: ARM64
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: setup python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: "3.13"
           architecture: ${{ matrix.architecture }}
@@ -189,7 +195,7 @@ jobs:
 
       - name: Set up QEMU
         if: matrix.name == 'manylinux-riscv64'
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
         with:
           platforms: riscv64
 
@@ -210,7 +216,7 @@ jobs:
         run: |
           python -m cibuildwheel .
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: wheels-${{ matrix.name }}
           path: "wheelhouse/*"
@@ -227,24 +233,31 @@ jobs:
         # strip leading `v` from tag, since it's not part of the version
         # see https://github.com/orgs/community/discussions/26625 for substring feature request
         run: |
-          echo "${{ github.ref_name }}" | sed s@^v@v=@ >> "${GITHUB_OUTPUT}"
+          echo "${GITHUB_REF_NAME}" | sed s@^v@v=@ >> "${GITHUB_OUTPUT}"
 
-      - uses: ncipollo/release-action@v1
-        with:
-          # mark as prerelease if it looks like one
-          prerelease: ${{ contains(github.ref_name, 'a') || contains(github.ref_name, 'b') || contains(github.ref_name, 'rc') }}
-          # link to release notes, PyPI
-          body: |
-            See [release notes][], or [pyzmq on PyPI][].
+      - run: |
+          ARGS=""
+          case "$VERSION" in
+            *a*|*b*|*rc*)
+              ARGS="--prerelease"
+              ;;
+          esac
 
-            Install with:
+          cat <<EOF | gh release create --repo $GITHUB_REPOSITORY $ARGS --verify-tag ${GITHUB_REF_NAME} --notes-file=-
+          See [release notes][], or [pyzmq on PyPI][].
 
-            ```
-            pip install 'pyzmq==${{ steps.version.outputs.v }}'
-            ```
+          Install with:
 
-            [release notes]: https://pyzmq.readthedocs.io/en/latest/changelog.html
-            [pyzmq on PyPI]: https://pypi.org/project/pyzmq/${{ steps.version.outputs.v }}/
+          \`\`\`
+          pip install 'pyzmq==${VERSION}'
+          \`\`\`
+
+          [release notes]: https://pyzmq.readthedocs.io/en/latest/changelog.html
+          [pyzmq on PyPI]: https://pypi.org/project/pyzmq/${VERSION}/
+          EOF
+        env:
+          VERSION: "${{ steps.version.outputs.v }}"
+          GH_TOKEN: "${{ github.token }}"
 
   list-wheels:
     runs-on: ubuntu-22.04
@@ -252,8 +265,10 @@ jobs:
       - sdist
       - wheel
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v8
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           path: dist
           merge-multiple: true
@@ -272,9 +287,9 @@ jobs:
       - sdist
       - wheel
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           path: dist
           merge-multiple: true
       - name: Publish wheels to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # release/v1
