@@ -4,5 +4,6 @@ gevent
 myst-parser[linkify]
 pydata_sphinx_theme
 pygments>=2.6
-sphinx>=3.0.4
+# enum-tools doesn't work with sphinx 9, yet
+sphinx==8.*
 tornado
