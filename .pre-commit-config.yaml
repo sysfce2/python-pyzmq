@@ -54,6 +54,27 @@ repos:
         args: [zmq]
         additional_dependencies:
           - types-paramiko
+
+  # github actions security checks
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.23.1
+    hooks:
+      - id: zizmor
+        args:
+          - --fix=all
+        files: .github/workflows/.*.ya?ml
+
+  # stricter config for wheels
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.23.1
+    hooks:
+      - id: zizmor
+        name: zizmor-strict
+        args:
+          - --fix=all
+          - --config=zizmor-strict.yaml
+        files: \.github/workflows/wheels\.yml
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
