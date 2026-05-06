@@ -6,6 +6,24 @@ import zmq
 
 from .select import select_backend
 
+__all__ = [
+    'Context',
+    'Socket',
+    'Frame',
+    'Message',
+    'proxy',
+    'proxy_steerable',
+    'zmq_poll',
+    'strerror',
+    'zmq_errno',
+    'has',
+    'curve_keypair',
+    'curve_public',
+    'zmq_version_info',
+    'IPC_PATH_MAX_LEN',
+    'PYZMQ_DRAFT_API',
+]
+
 # avoid collision in Frame.bytes
 _bytestr = bytes
 
@@ -26,6 +44,8 @@ class Frame:
     def copy_fast(self: T) -> T: ...
     def get(self, option: int) -> int | _bytestr | str: ...
     def set(self, option: int, value: int | _bytestr | str) -> None: ...
+
+Message = Frame
 
 class Socket:
     underlying: int
