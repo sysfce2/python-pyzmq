@@ -143,7 +143,7 @@ search = '__version__: str = "{current_version}"'
 
 [tool.cibuildwheel]
 build-verbosity = "1"
-enable = ["cpython-freethreading", "pypy", "pypy-eol"]
+enable = ["pypy", "pypy-eol"]
 test-requires = ["pytest>=6", "importlib_metadata"]
 test-sources = ["tools/test_wheel.py"]
 test-command = "python -m pytest -vsx tools/test_wheel.py"
