@@ -70,15 +70,11 @@ def recv_monitor_message(
     socket: zmq.asyncio.Socket,
     flags: int = 0,
 ) -> Awaitable[_MonitorMessage]: ...
-
-
 @overload
 def recv_monitor_message(
     socket: zmq.Socket[bytes],
     flags: int = 0,
 ) -> _MonitorMessage: ...
-
-
 def recv_monitor_message(
     socket: zmq.Socket,
     flags: int = 0,
